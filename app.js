@@ -55,6 +55,8 @@ document.getElementById("usersTable").addEventListener("click", function(event){
 
         document.getElementById("name").value = user.name; // fylder form med navn
         document.getElementById("email").value = user.email; // fylder form med email
+        document.getElementById("phone").value = user.phone || ""; // fylder form med email
+        document.getElementById("website").value = user.website || ""; // fylder form med email
 
         editState.editing = true; // sætter edit-mode til true
         editState.userId = id; // gemmer id på den bruger vi redigerer
@@ -70,8 +72,10 @@ userForm.addEventListener("submit", async function(event) {
     // henter værdir fra form
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const website = document.getElementById("website").value;
 
-    const newUser = {name, email}; // laver et nyt bruger-objekt
+    const newUser = {name, email, phone, website}; // laver et nyt bruger-objekt
 
     try {
         let response;
