@@ -74,20 +74,37 @@ userForm.addEventListener("submit", async function(event) {
     const newUser = {name, email}; // laver et nyt bruger-objekt
 
     try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/users", {
-            method: "POST", // opretter ny bruger
-            headers: {"Content-Type": "application/json"}, // fortæller server at vi sender JSON
-            body: JSON.stringify(newUser) // sender brugerdata som JSON
-        });
+        let response;
+        let data;
 
-        const data = await response.json(); // modtager svar fra API
-        console.log("Bruger oprettet:", data); // viser i konsollen
+        if (editState.editing) {
+            //opdaterer bruger
+            response = await fetch(`https://jsonplaceholder.typicode.com/users/${editState.userId}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(newUser)
+            });
+            data = await response.json();
 
-        users.push(data); // tilføjer den nye bruger til global array
-        renderUsers(users); // opdaterer tabellen
+            const index = users.findIndex(u => u.id == editState.userId);
+            users[index] = data;
 
-        userForm.reset(); // clear felterne
+            editState.editing = false;
+            editState.userId = null;
+
+        } else {
+            response = await fetch("https://jsonplaceholder.typicode.com/users", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(newUser)
+            });
+            data = await response.json();
+            users.push(data);
+        }
+
+        renderUsers(users);
+        userForm.reset();
     } catch (error) {
-        console.error("Fejl ved oprettelse:", error); // fejlbesked hvis fejl
+        console.error("fejl ved oprettelse eller opdatering", error);
     }
 });
