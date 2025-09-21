@@ -35,6 +35,7 @@ function renderUsers(users) {
             <td>${user.phone || ""}</td> <!-- hvis phone er tom, vis tom streng -->
             <td>${user.website || ""}</td>
             <td><button class="editBtn">Edit</button></td> <!-- knap til at redigere bruger --> 
+            <td><button class="deleteBtn">Delete</button></td>
         </tr>
 `;
     }
@@ -60,6 +61,11 @@ document.getElementById("usersTable").addEventListener("click", function(event){
 
         editState.editing = true; // sætter edit-mode til true
         editState.userId = id; // gemmer id på den bruger vi redigerer
+    } else if (event.target.classList.contains("deleteBtn")) {
+        const row = event.target.closest("tr"); // find rækken
+        const id = Number(row.getAttribute("data-id")); // hent bruger-id og konverter til tal
+        users = users.filter(u => u.id !== id); // fjern brugeren fra array
+        renderUsers(users); // opdater tabellen
     }
 })
 
