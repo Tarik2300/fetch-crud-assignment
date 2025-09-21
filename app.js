@@ -29,11 +29,12 @@ function renderUsers(users) {
 
     for (const user of users) { // løber gennem alle brugere
         html += `
-        <tr>
-            <td>${user.name}</td> 
-            <td>${user.email}</td> 
-            <td>${user.phone}</td>
-            <td>${user.website}</td> 
+        <tr data-id="${user.id}">
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.phone || ""}</td>
+            <td>${user.website || ""}</td>
+            <td><button class="editBtn">Edit</button></td> <!-- selve edit kanppen --> 
         </tr>
 `;
     }
